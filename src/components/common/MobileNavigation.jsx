@@ -1,25 +1,37 @@
-import { BasketToggle } from '@/components/basket';
-import { HOME, SIGNIN } from '@/constants/routes';
-import PropType from 'prop-types';
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import UserNav from '@/views/account/components/UserAvatar';
-import Badge from './Badge';
-import FiltersToggle from './FiltersToggle';
-import SearchBar from './SearchBar';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { Link, useLocation, NavLink } from "react-router-dom";
+import UserNav from "@/views/account/components/UserAvatar";
+import { BasketToggle } from "@/components/basket";
+import Badge from "./Badge";
+import {
+  HOME,
+  SIGNIN,
+  SHOP,
+  FEATURED_PRODUCTS,
+  RECOMMENDED_PRODUCTS,
+} from "@/constants/routes";
 
-const Navigation = (props) => {
-  const {
-    isAuthenticating, basketLength, disabledPaths, user
-  } = props;
+const MobileNavigation = (props) => {
+  const { isAuthenticating, basketLength, disabledPaths, user } = props;
   const { pathname } = useLocation();
+
+  const [drawerVisible, setDrawerVisible] = useState(false);
 
   const onClickLink = (e) => {
     if (isAuthenticating) e.preventDefault();
   };
 
+  const toggleDrawer = () => {
+    setDrawerVisible(!drawerVisible);
+  };
+
+  const closeDrawer = () => {
+    setDrawerVisible(false);
+  };
+
   return (
-    <nav className="mobile-navigation">
+    <div className="mobile-navigation">
       <div className="mobile-navigation-main">
         <div className="mobile-navigation-logo">
           <Link onClick={onClickLink} to={HOME}>
@@ -35,9 +47,11 @@ const Navigation = (props) => {
               disabled={disabledPaths.includes(pathname)}
               type="button"
             >
-
               <Badge count={basketLength}>
-                <i className="fa fa-shopping-bag" style={{ fontSize: '2rem' }} />
+                <i
+                  className="fa fa-shopping-bag"
+                  style={{ fontSize: "2rem" }}
+                />
               </Badge>
             </button>
           )}
@@ -63,27 +77,68 @@ const Navigation = (props) => {
             </>
           )}
         </ul>
-      </div>
-      <div className="mobile-navigation-sec">
-        <SearchBar />
-        <FiltersToggle>
-          <button className="button-link button-small" type="button">
-            <i className="fa fa-filter" />
+        {drawerVisible ? (
+          <button className="drawer-close" onClick={closeDrawer}>
+            <div className="close-button" onClick={toggleDrawer}>
+              ✕
+            </div>
           </button>
-        </FiltersToggle>
+        ) : (
+          <button className="menu-icon" onClick={toggleDrawer}>
+            <div className="menu-icon">☰</div>
+          </button>
+        )}
       </div>
-    </nav>
+
+      {/* Drawer Content */}
+      {drawerVisible && (
+        <div className="drawer">
+          <div className="drawer-content">
+            {/* Add your drawer content here, such as additional navigation links */}
+            <ul className="navigation-menu-main-mobile">
+              <li onClick={closeDrawer}>
+                <NavLink
+                  activeClassName="navigation-menu-active"
+                  exact
+                  to={HOME}
+                >
+                  Home
+                </NavLink>
+              </li>
+              <li onClick={closeDrawer}>
+                <NavLink activeClassName="navigation-menu-active" to={SHOP}>
+                  Shop
+                </NavLink>
+              </li>
+              <li onClick={closeDrawer}>
+                <NavLink
+                  activeClassName="navigation-menu-active"
+                  to={FEATURED_PRODUCTS}
+                >
+                  Mens
+                </NavLink>
+              </li>
+              <li onClick={closeDrawer}>
+                <NavLink
+                  activeClassName="navigation-menu-active"
+                  to={RECOMMENDED_PRODUCTS}
+                >
+                  Womens
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
-Navigation.propTypes = {
-  isAuthenticating: PropType.bool.isRequired,
-  basketLength: PropType.number.isRequired,
-  disabledPaths: PropType.arrayOf(PropType.string).isRequired,
-  user: PropType.oneOfType([
-    PropType.bool,
-    PropType.object
-  ]).isRequired
+MobileNavigation.propTypes = {
+  isAuthenticating: PropTypes.bool.isRequired,
+  basketLength: PropTypes.number.isRequired,
+  disabledPaths: PropTypes.arrayOf(PropTypes.string).isRequired,
+  user: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
 };
 
-export default Navigation;
+export default MobileNavigation;

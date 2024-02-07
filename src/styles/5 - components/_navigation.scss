@@ -61,6 +61,28 @@
   text-align: right;
 }
 
+.navigation-menu-main-mobile {
+  padding-left: 0;
+  margin-right: 2rem;
+  flex-grow: 1;
+
+  li {
+    display: block;
+
+    a {
+      display: block;
+      padding: 10px 15px;
+      font-size: 1.4rem;
+      opacity: .5;
+
+      &:hover {
+        background: $background-color-01;
+      }
+    }
+  }
+}
+
+
 .navigation-menu-main {
   padding-left: 0;
   margin-right: 2rem;

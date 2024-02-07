@@ -51,7 +51,7 @@ const Home = () => {
         </div>
         <div className="display">
           <div className="display-header">
-            <h1>Featured Products</h1>
+            <h1>Mens Products</h1>
             <Link to={FEATURED_PRODUCTS}>See All</Link>
           </div>
           {(errorFeatured && !isLoadingFeatured) ? (
@@ -67,9 +67,10 @@ const Home = () => {
             />
           )}
         </div>
+        
         <div className="display">
           <div className="display-header">
-            <h1>Recommended Products</h1>
+            <h1>Women Products</h1>
             <Link to={RECOMMENDED_PRODUCTS}>See All</Link>
           </div>
           {(errorRecommended && !isLoadingRecommended) ? (
